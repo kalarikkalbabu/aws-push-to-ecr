@@ -4,15 +4,15 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 879344392617.dkr.ecr.ap-northeast-1.amazonaws.com
+      - aws ecr get-login-password --region ${REGION} | docker login --username AWS --password-stdin ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com
   build:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...          
-      - docker build -t traveldoo-hotel-image-repo:latest .
-      - docker tag traveldoo-hotel-image-repo:latest 879344392617.dkr.ecr.ap-northeast-1.amazonaws.com/traveldoo-hotel-image-repo:latest     
+      - docker build -t {REPO_NAME}:latest .
+      - docker tag {REPO_NAME}:latest ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${REGION}:latest     
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      - docker push 879344392617.dkr.ecr.ap-northeast-1.amazonaws.com/traveldoo-hotel-image-repo:latest
+      - docker push ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${REGION}:latest
